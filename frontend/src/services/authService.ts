@@ -1,7 +1,7 @@
 import api from "./api"
 import type { LoginRequest, RegisterRequest, AuthResponse } from "../types/Auth"
 
-const AUTH_URL = "/auth"
+const AUTH_URL = "http://localhost:8083/api/auth"
 
 const login = async (loginRequest: LoginRequest): Promise<AuthResponse> => {
   const response = await api.post<AuthResponse>(`${AUTH_URL}/signin`, loginRequest)

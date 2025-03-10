@@ -1,7 +1,7 @@
 import api from "./api"
 import type { Customer } from "../types/Customer"
 
-const CUSTOMERS_URL = "/customers"
+const CUSTOMERS_URL = "http://localhost:8081/api/customers"
 
 const getAllCustomers = async (): Promise<Customer[]> => {
   const response = await api.get<Customer[]>(CUSTOMERS_URL)

@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { useState, useEffect } from "react"
 import {
@@ -15,6 +13,7 @@ import {
   ListItem,
   ListItemText,
   CircularProgress,
+  Chip,
 } from "@mui/material"
 import { People as PeopleIcon, Description as DescriptionIcon, ReportProblem as ReportIcon } from "@mui/icons-material"
 import { useAuth } from "../contexts/AuthContext"
@@ -79,79 +78,67 @@ const Dashboard: React.FC = () => {
       </Typography>
 
       <Grid container spacing={3}>
-        {/* Summary Cards */}
+        {/* Summary Cards with New Color Palette */}
         <Grid item xs={12} sm={6} md={4}>
-          <Paper
-            sx={{
-              p: 2,
-              display: "flex",
-              flexDirection: "column",
-              height: 140,
-              bgcolor: "primary.light",
-              color: "white",
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <PeopleIcon sx={{ mr: 1 }} />
-              <Typography variant="h6" component="div">
-                Total Customers
+          <Card sx={{ display: "flex", flexDirection: "column", height: 180 }}>
+            <CardHeader
+              avatar={<PeopleIcon sx={{ fontSize: 40, color: "white" }} />}
+              title="Total Customers"
+              sx={{
+                backgroundColor: "#4CAF50", // Green
+                color: "white",
+              }}
+            />
+            <CardContent>
+              <Typography variant="h4" component="div">
+                {customerCount}
               </Typography>
-            </Box>
-            <Typography variant="h3" component="div">
-              {customerCount}
-            </Typography>
-          </Paper>
+              <Chip label="Active" color="success" size="small" sx={{ mt: 1 }} />
+            </CardContent>
+          </Card>
         </Grid>
 
         <Grid item xs={12} sm={6} md={4}>
-          <Paper
-            sx={{
-              p: 2,
-              display: "flex",
-              flexDirection: "column",
-              height: 140,
-              bgcolor: "secondary.light",
-              color: "white",
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <DescriptionIcon sx={{ mr: 1 }} />
-              <Typography variant="h6" component="div">
-                Active Policies
+          <Card sx={{ display: "flex", flexDirection: "column", height: 180 }}>
+            <CardHeader
+              avatar={<DescriptionIcon sx={{ fontSize: 40, color: "white" }} />}
+              title="Active Policies"
+              sx={{
+                backgroundColor: "#2196F3", // Blue
+                color: "white",
+              }}
+            />
+            <CardContent>
+              <Typography variant="h4" component="div">
+                {policyCount}
               </Typography>
-            </Box>
-            <Typography variant="h3" component="div">
-              {policyCount}
-            </Typography>
-          </Paper>
+              <Chip label="Pending Review" color="warning" size="small" sx={{ mt: 1 }} />
+            </CardContent>
+          </Card>
         </Grid>
 
         <Grid item xs={12} sm={6} md={4}>
-          <Paper
-            sx={{
-              p: 2,
-              display: "flex",
-              flexDirection: "column",
-              height: 140,
-              bgcolor: "error.light",
-              color: "white",
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <ReportIcon sx={{ mr: 1 }} />
-              <Typography variant="h6" component="div">
-                Open Claims
+          <Card sx={{ display: "flex", flexDirection: "column", height: 180 }}>
+            <CardHeader
+              avatar={<ReportIcon sx={{ fontSize: 40, color: "white" }} />}
+              title="Open Claims"
+              sx={{
+                backgroundColor: "#FF5722", // Deep Orange
+                color: "white",
+              }}
+            />
+            <CardContent>
+              <Typography variant="h4" component="div">
+                {claimCount}
               </Typography>
-            </Box>
-            <Typography variant="h3" component="div">
-              {claimCount}
-            </Typography>
-          </Paper>
+              <Chip label="Urgent" color="error" size="small" sx={{ mt: 1 }} />
+            </CardContent>
+          </Card>
         </Grid>
 
-        {/* Recent Customers */}
+        {/* Recent Items List */}
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card sx={{ height: "100%" }}>
             <CardHeader title="Recent Customers" avatar={<PeopleIcon color="primary" />} />
             <Divider />
             <CardContent>
@@ -172,9 +159,8 @@ const Dashboard: React.FC = () => {
           </Card>
         </Grid>
 
-        {/* Recent Policies */}
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card sx={{ height: "100%" }}>
             <CardHeader title="Recent Policies" avatar={<DescriptionIcon color="secondary" />} />
             <Divider />
             <CardContent>
@@ -198,9 +184,8 @@ const Dashboard: React.FC = () => {
           </Card>
         </Grid>
 
-        {/* Recent Claims */}
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card sx={{ height: "100%" }}>
             <CardHeader title="Recent Claims" avatar={<ReportIcon color="error" />} />
             <Divider />
             <CardContent>
@@ -229,4 +214,3 @@ const Dashboard: React.FC = () => {
 }
 
 export default Dashboard
-

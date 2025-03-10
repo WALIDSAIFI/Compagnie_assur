@@ -137,6 +137,21 @@ const CustomerList: React.FC = () => {
           placeholder="Search customers by name or email..."
           value={searchTerm}
           onChange={handleSearchChange}
+          sx={{
+            borderRadius: 2,
+            '& .MuiOutlinedInput-root': {
+              borderRadius: 3,
+              '& fieldset': {
+                borderColor: '#ccc',
+              },
+              '&:hover fieldset': {
+                borderColor: '#007bff',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#0056b3',
+              },
+            },
+          }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -208,26 +223,8 @@ const CustomerList: React.FC = () => {
           </Typography>
         </Paper>
       )}
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
-        <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete {customerToDelete?.firstName} {customerToDelete?.lastName}? This action
-            cannot be undone.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteCancel}>Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="error" autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   )
 }
 
 export default CustomerList
-

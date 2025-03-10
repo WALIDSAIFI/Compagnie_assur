@@ -1,7 +1,7 @@
 import api from "./api"
 import type { Policy, PolicyWithCustomer } from "../types/Policy"
 
-const POLICIES_URL = "/policies"
+const POLICIES_URL = "http://localhost:8082/api/policies"
 
 const getAllPolicies = async (): Promise<Policy[]> => {
   const response = await api.get<Policy[]>(POLICIES_URL)
