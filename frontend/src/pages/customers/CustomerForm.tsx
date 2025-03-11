@@ -8,7 +8,6 @@ import {
   TextField,
   Typography,
   Paper,
-  Grid,
   CircularProgress,
   Alert,
 } from "@mui/material";
@@ -43,8 +42,8 @@ const CustomerForm = () => {
       const data = await customerService.getCustomerById(Number(id));
       setCustomer(data);
     } catch (err) {
-      console.error("Error fetching customer:", err);
-      setError("Failed to load customer details. Please try again.");
+      console.error("Erreur lors de la récupération du client :", err);
+      setError("Échec de la récupération des détails du client. Veuillez réessayer.");
     } finally {
       setLoading(false);
     }
@@ -57,15 +56,15 @@ const CustomerForm = () => {
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
-    if (!customer.firstName.trim()) errors.firstName = "First name is required";
-    if (!customer.lastName.trim()) errors.lastName = "Last name is required";
+    if (!customer.firstName.trim()) errors.firstName = "Le prénom est requis";
+    if (!customer.lastName.trim()) errors.lastName = "Le nom est requis";
     if (!customer.email.trim()) {
-      errors.email = "Email is required";
+      errors.email = "L'email est requis";
     } else if (!/\S+@\S+\.\S+/.test(customer.email)) {
-      errors.email = "Email is invalid";
+      errors.email = "L'email est invalide";
     }
-    if (!customer.address.trim()) errors.address = "Address is required";
-    if (!customer.phone.trim()) errors.phone = "Phone number is required";
+    if (!customer.address.trim()) errors.address = "L'adresse est requise";
+    if (!customer.phone.trim()) errors.phone = "Le numéro de téléphone est requis";
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -96,8 +95,8 @@ const CustomerForm = () => {
         }
         navigate("/customers");
       } catch (err) {
-        console.error("Error saving customer:", err);
-        setError("Failed to save customer. Please try again.");
+        console.error("Erreur lors de la sauvegarde du client :", err);
+        setError("Échec de l'enregistrement du client. Veuillez réessayer.");
       } finally {
         setSaving(false);
       }
@@ -114,33 +113,33 @@ const CustomerForm = () => {
   }
 
   return (
-    <Box>
+    <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
       <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-        <Button startIcon={<ArrowBackIcon />} onClick={() => navigate("/customers")} sx={{ mr: 2 }}>
-          Back
+        <Button startIcon={<ArrowBackIcon />} onClick={() => navigate("/customers")}>
+          Retour
         </Button>
-        <Typography variant="h4" component="h1">
-          {isEditMode ? "Edit Customer" : "Add Customer"}
+        <Typography variant="h5" component="h1" sx={{ ml: 2 }}>
+          {isEditMode ? "Modifier le client" : "Ajouter un client"}
         </Typography>
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }} aria-live="polite">
+        <Alert severity="error" sx={{ mb: 3 }}>
           {error}
         </Alert>
       )}
 
       <Paper sx={{ p: 3 }}>
         <Box component="form" onSubmit={handleSubmit}>
-          <Grid container spacing={3}>
+          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 3 }}>
             {[
-              { label: "First Name", name: "firstName" },
-              { label: "Last Name", name: "lastName" },
+              { label: "Prénom", name: "firstName" },
+              { label: "Nom", name: "lastName" },
               { label: "Email", name: "email", type: "email" },
-              { label: "Address", name: "address" },
-              { label: "Phone", name: "phone" },
+              { label: "Adresse", name: "address" },
+              { label: "Numéro de téléphone", name: "phone" },
             ].map(({ label, name, type = "text" }) => (
-              <Grid key={name} item xs={12} sm={name === "email" ? 12 : 6}>
+              <Box key={name}>
                 <TextField
                   fullWidth
                   label={label}
@@ -151,18 +150,19 @@ const CustomerForm = () => {
                   error={!!formErrors[name]}
                   helperText={formErrors[name]}
                   required
+                  sx={{ fontSize: "1rem", p: 1 }}
                 />
-              </Grid>
+              </Box>
             ))}
-            <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}>
-              <Button variant="outlined" onClick={() => navigate("/customers")}>
-                Cancel
-              </Button>
-              <Button type="submit" variant="contained" startIcon={<SaveIcon />} disabled={saving}>
-                {saving ? <CircularProgress size={24} /> : "Save"}
-              </Button>
-            </Grid>
-          </Grid>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
+            <Button variant="outlined" onClick={() => navigate("/customers")} sx={{ mr: 2 }}>
+              Annuler
+            </Button>
+            <Button type="submit" variant="contained" startIcon={<SaveIcon />} disabled={saving}>
+              {saving ? <CircularProgress size={24} /> : "Sauvegarder"}
+            </Button>
+          </Box>
         </Box>
       </Paper>
     </Box>

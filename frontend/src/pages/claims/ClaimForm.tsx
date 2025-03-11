@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { useState, useEffect, ChangeEvent } from "react"
 import { useNavigate, useParams, useLocation } from "react-router-dom"
@@ -183,38 +181,29 @@ const ClaimForm: React.FC = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box>
-        <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-          <Button 
-            startIcon={<ArrowBackIcon />} 
-            onClick={() => claim.policyId ? navigate(`/policies/${claim.policyId}`) : navigate("/claims")} 
-            sx={{ mr: 2 }}
-          >
-            Back
-          </Button>
-          <Typography variant="h4" component="h1">
-            {isEditMode ? "Edit Claim" : "Submit New Claim"}
-          </Typography>
-        </Box>
+      <Box sx={{ maxWidth: 900, margin: "0 auto", p: 2 }}>
+        <Typography variant="h5" sx={{ textAlign: "center", marginBottom: 2 }}>
+          {isEditMode ? "Modifier la réclamation" : "Soumettre une réclamation"}
+        </Typography>
 
         {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
+          <Alert severity="error" sx={{ marginBottom: 2 }}>
             {error}
           </Alert>
         )}
 
-        <Paper sx={{ p: 3 }}>
+        <Paper sx={{ padding: 2, boxShadow: 2 }}>
           <Box component="form" onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth error={!!formErrors.policyId}>
-                  <InputLabel id="policy-label">Policy</InputLabel>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <FormControl fullWidth size="small" error={!!formErrors.policyId}>
+                  <InputLabel id="policy-label">Politique</InputLabel>
                   <Select
                     labelId="policy-label"
                     id="policyId"
                     name="policyId"
                     value={claim.policyId || ""}
-                    label="Policy"
+                    label="Politique"
                     onChange={handleSelectChange}
                     disabled={!!policyId}
                   >
@@ -227,9 +216,10 @@ const ClaimForm: React.FC = () => {
                   {formErrors.policyId && <FormHelperText>{formErrors.policyId}</FormHelperText>}
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6}>
+
+              <Grid item xs={12}>
                 <DatePicker
-                  label="Date of Incident"
+                  label="Date de l'incident"
                   value={claim.date ? new Date(claim.date) : null}
                   onChange={handleDateChange}
                   slotProps={{
@@ -237,14 +227,16 @@ const ClaimForm: React.FC = () => {
                       fullWidth: true,
                       error: !!formErrors.date,
                       helperText: formErrors.date,
+                      size: "small",
                     },
                   }}
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="Claimed Amount ($)"
+                  label="Montant réclamé (MAD)"
                   name="claimedAmount"
                   type="number"
                   value={claim.claimedAmount}
@@ -252,65 +244,96 @@ const ClaimForm: React.FC = () => {
                   error={!!formErrors.claimedAmount}
                   helperText={formErrors.claimedAmount}
                   InputProps={{ inputProps: { min: 0 } }}
+                  size="small"
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label="Description"
                   name="description"
                   multiline
-                  rows={4}
+                  rows={2}
                   value={claim.description}
                   onChange={handleInputChange}
                   error={!!formErrors.description}
-                  helperText={formErrors.description || "Please provide detailed information about the incident"}
+                  helperText={formErrors.description || "Décrivez l'incident avec le plus de détails possible."}
+                  size="small"
                 />
               </Grid>
+
               {isEditMode && (
                 <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="status-label">Status</InputLabel>
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="status-label">Statut</InputLabel>
                     <Select
                       labelId="status-label"
                       id="status"
                       name="status"
                       value={claim.status}
-                      label="Status"
+                      label="Statut"
                       onChange={(e) => {
                         setClaim((prev) => ({ ...prev, status: e.target.value as ClaimStatus }));
                       }}
                     >
-                      <MenuItem value={ClaimStatus.PENDING}>Pending</MenuItem>
-                      <MenuItem value={ClaimStatus.APPROVED}>Approved</MenuItem>
-                      <MenuItem value={ClaimStatus.REJECTED}>Rejected</MenuItem>
-                      <MenuItem value={ClaimStatus.SETTLED}>Settled</MenuItem>
+                      <MenuItem value={ClaimStatus.PENDING}>En attente</MenuItem>
+                      <MenuItem value={ClaimStatus.APPROVED}>Approuvé</MenuItem>
+                      <MenuItem value={ClaimStatus.REJECTED}>Rejeté</MenuItem>
+                      <MenuItem value={ClaimStatus.SETTLED}>Réglé</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
               )}
+
               {isEditMode && claim.status === ClaimStatus.SETTLED && (
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
-                    label="Settled Amount ($)"
+                    label="Montant réglé (MAD)"
                     name="settledAmount"
                     type="number"
                     value={claim.settledAmount || ""}
                     onChange={handleInputChange}
                     InputProps={{ inputProps: { min: 0 } }}
+                    size="small"
                   />
                 </Grid>
               )}
-              <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}>
+
+              <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", gap: 1, mt: 2 }}>
                 <Button 
                   variant="outlined" 
                   onClick={() => claim.policyId ? navigate(`/policies/${claim.policyId}`) : navigate("/claims")}
+                  sx={{
+                    backgroundColor: "#f5f5f5", 
+                    color: "#333", 
+                    "&:hover": {
+                      backgroundColor: "#ddd"
+                    },
+                    padding: "6px 12px",
+                    fontSize: "0.875rem"
+                  }}
                 >
-                  Cancel
+                  Annuler
                 </Button>
-                <Button type="submit" variant="contained" startIcon={<SaveIcon />} disabled={saving}>
-                  {saving ? <CircularProgress size={24} /> : "Save"}
+
+                <Button 
+                  variant="contained" 
+                  type="submit"
+                  sx={{
+                    backgroundColor: "#0073e6", 
+                    color: "#fff", 
+                    "&:hover": {
+                      backgroundColor: "#005bb5"
+                    },
+                    padding: "6px 12px",
+                    fontSize: "0.875rem"
+                  }}
+                  disabled={saving}
+                  startIcon={saving ? <CircularProgress size={20} color="inherit" /> : <SaveIcon />}
+                >
+                  {isEditMode ? "Mettre à jour" : "Soumettre"}
                 </Button>
               </Grid>
             </Grid>

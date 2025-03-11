@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { useState, useEffect, ChangeEvent } from "react"
 import { useNavigate, useParams, useLocation } from "react-router-dom"
@@ -18,7 +16,7 @@ import {
   Select,
   FormHelperText,
 } from "@mui/material"
-import { ArrowBack as ArrowBackIcon, Save as SaveIcon } from "@mui/icons-material"
+import { Home as HomeIcon, Check as CheckIcon } from "@mui/icons-material"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
@@ -27,7 +25,6 @@ import customerService from "../../services/customerService"
 import { type Policy, PolicyType } from "../../types/Policy"
 import type { Customer } from "../../types/Customer"
 import { SelectChangeEvent } from '@mui/material/Select';
-
 
 const PolicyForm: React.FC = () => {
   const { id } = useParams<{ id: string }>()
@@ -175,25 +172,25 @@ const PolicyForm: React.FC = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box>
-        <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-          <Button startIcon={<ArrowBackIcon />} onClick={() => navigate("/policies")} sx={{ mr: 2 }}>
+      <Box sx={{ maxWidth: 600, mx: "auto", p: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+          <Button startIcon={<HomeIcon />} onClick={() => navigate("/policies")} sx={{ mr: 2, fontSize: "0.875rem" }}>
             Back
           </Button>
-          <Typography variant="h4" component="h1">
+          <Typography variant="h5" component="h1" sx={{ fontSize: "1.25rem" }}>
             {isEditMode ? "Edit Policy" : "Add Policy"}
           </Typography>
         </Box>
 
         {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
+          <Alert severity="error" sx={{ mb: 2 }}>
             {error}
           </Alert>
         )}
 
-        <Paper sx={{ p: 3 }}>
+        <Paper sx={{ p: 2 }}>
           <Box component="form" onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth error={!!formErrors.type}>
                   <InputLabel id="policy-type-label">Policy Type</InputLabel>
@@ -273,11 +270,23 @@ const PolicyForm: React.FC = () => {
                   InputProps={{ inputProps: { min: 0 } }}
                 />
               </Grid>
-              <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}>
-                <Button variant="outlined" onClick={() => navigate("/policies")}>
+              <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", gap: 1, mt: 2 }}>
+                <Button variant="outlined" onClick={() => navigate("/policies")} sx={{ fontSize: "0.875rem" }}>
                   Cancel
                 </Button>
-                <Button type="submit" variant="contained" startIcon={<SaveIcon />} disabled={saving}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  startIcon={<CheckIcon />}
+                  disabled={saving}
+                  sx={{
+                    fontSize: "0.875rem",
+                    backgroundColor: "#FF7043", // Orange color
+                    "&:hover": {
+                      backgroundColor: "#F4511E", // Darker shade of orange on hover
+                    },
+                  }}
+                >
                   {saving ? <CircularProgress size={24} /> : "Save"}
                 </Button>
               </Grid>
@@ -290,4 +299,3 @@ const PolicyForm: React.FC = () => {
 }
 
 export default PolicyForm
-
