@@ -355,4 +355,5 @@ const ClaimList: React.FC = () => {
   )
 }
 
+
 export default ClaimList
